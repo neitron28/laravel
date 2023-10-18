@@ -28,3 +28,7 @@ docker-compose exec app php artisan make:middleware AuthenticateCustom
 
 
 
+# Rules
+sudo chmod 777 -R /home/neitron/PhpstormProjects/igor/laravel
+docker-compose exec app php artisan view:clear
+docker-compose exec app  php artisan route:clear
