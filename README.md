@@ -13,3 +13,8 @@ docker-compose exec app php artisan make:policy PostPolicy --model=Post
 ## Create Post
 docker-compose exec app php artisan make:model Post
 
+## Composer AutoLoad (# to fix for define Post.php)
+docker-compose exec app composer dump-autoload
+
+## Add rules 
+/home/neitron/PhpstormProjects/igor/laravel/app/Policies/PostPolicy.php
