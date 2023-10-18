@@ -23,7 +23,8 @@ docker-compose exec app php artisan config:clear
 docker-compose exec app php artisan cache:clear
 
 # Middleware
-docker-compose exec app php artisan make:middleware CheckAge
+docker-compose exec app php artisan make:middleware AuthenticateCustom
+
 
 
 
