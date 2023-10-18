@@ -18,3 +18,4 @@ yarn-error.log
 /.vscode
 /bootstrap/cache/packages.php
 /bootstrap/cache/services.php
+/storage/framework/views
