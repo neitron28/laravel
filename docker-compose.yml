@@ -41,8 +41,6 @@ services:
     networks:
       - app-network
 
-# ... (інші конфігурації)
-
   node:
     image: node:14
     container_name: laravel-node
@@ -51,7 +49,7 @@ services:
     working_dir: /var/www
     command: /bin/sh -c "while sleep 1000; do :; done"
 
-    # Nginx Service
+  #Nginx Service
   webserver:
       image: nginx:alpine
       container_name: laravel-nginx
