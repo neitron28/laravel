@@ -17,5 +17,13 @@ WORKDIR /var/www/
 # Встановлюємо права на файли і директорії
 RUN chown -R www-data:www-data /var/www
 
+# Копіюємо entrypoint скрипт і робимо його виконуваним
+COPY start-container.sh /usr/local/bin/start-container.sh
+RUN chmod +x /usr/local/bin/start-container.sh
+
+# Встановлюємо entrypoint
+ENTRYPOINT ["/usr/local/bin/start-container.sh"]
+
 # Запускаємо PHP-FPM
 CMD ["php-fpm"]
+

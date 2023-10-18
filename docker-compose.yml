@@ -6,6 +6,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+          - USER_ID=${USER_ID}
+          - GROUP_ID=${GROUP_ID}
     image: 'dockerfile-laravel'
     container_name: laravel-app
     restart: unless-stopped
