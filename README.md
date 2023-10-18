@@ -35,3 +35,13 @@ docker-compose exec app  php artisan route:clear
 - run migration: php artisan migrate
 - create new file WriteToLog.php: docker-compose exec app php artisan make:job WriteToLog
 - start the queue worker: docker-compose exec app php artisan queue:work
+- can be check: http://localhost:8010/dispatch-job
+
+# Cache
+docker-compose exec app php artisan serve
+- can be test set key: http://localhost:8010/cache-set?key=yourUniqueKey&value=ThisIsTheValue
+- can be test get key: http://localhost:8010/cache-get?key=yourUniqueKey
+
+# API 
+- Create API KEY: ff1ee38d76df76dc57a73eef9d5cc2ec via https://home.openweathermap.org/api_keys
+- Install Guzzle: docker-compose exec app composer require guzzlehttp/guzzle
