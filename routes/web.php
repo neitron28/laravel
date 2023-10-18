@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckAuthenticated;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +25,7 @@ Route::middleware([
 ])->group(function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard')->middleware(CheckAuthenticated::class);
 });
 
 Route::resource('posts', 'PostController');
