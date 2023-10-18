@@ -4,7 +4,7 @@ use App\Http\Middleware\CheckAuthenticated;
 use Illuminate\Support\Facades\Route;
 use App\Jobs\WriteToLog;
 use Illuminate\Support\Facades\Cache;
-use GuzzleHttp\Client; // Не забудьте імпортувати клієнта Guzzle.
+use GuzzleHttp\Client;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +66,17 @@ Route::get('/cache-set', function () {
     return 'Value set in cache!';
 });
 
-# API weather
 Route::get('/weather', function () {
-    // Тут буде логіка обробки запиту
+    $city = request('city') ?? 'Kyiv';
+    $apiKey = 'ff1ee38d76df76dc57a73eef9d5cc2ec';
+
+    $url = "http://api.openweathermap.org/data/2.5/weather?q={$city}&appid={$apiKey}&units=metric&lang=ua";
+
+    $client = new Client();
+    $response = $client->request('GET', $url);
+
+    $data = $response->getBody();
+
+    return response($data)
+        ->header('Content-Type', 'application/json');
 });
