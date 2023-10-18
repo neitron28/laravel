@@ -10,12 +10,17 @@ class CheckAge
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param  Closure  $next
+     * @param string|null $redirectTo
+     * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $redirectTo = null)
     {
+        if ($request->input('age') <= 18) {
+            return redirect($redirectTo ?? 'login');
+        }
+
         return $next($request);
     }
 }
