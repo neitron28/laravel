@@ -18,5 +18,10 @@ docker-compose exec app composer dump-autoload
 
 # Crud
 docker-compose exec app php artisan make:controller PostController --resource
+docker-compose exec app composer update
+docker-compose exec app php artisan config:clear
+docker-compose exec app php artisan cache:clear
+
+
 
 

@@ -30,7 +30,8 @@ class PostController extends Controller
 
     public function show($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        return view('posts.show', compact('post'));
     }
 
     /**
@@ -42,13 +43,33 @@ class PostController extends Controller
         return view('posts.edit', compact('post'));
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            // ... (ваші правила валідації)
+        ]);
+
+        $post = Post::findOrFail($id);
+        $this->authorize('update', $post);
+
+        $post->update($request->all());
+
+        return redirect('/posts')->with('success', 'Post Updated Successfully.');
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        $this->authorize('delete', $post);
+
+        $post->delete();
+
+        return redirect('/posts')->with('success', 'Post Deleted Successfully.');
     }
 }
