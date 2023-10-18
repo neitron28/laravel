@@ -16,5 +16,7 @@ docker-compose exec app php artisan make:model Post
 ## Composer AutoLoad (# to fix for define Post.php)
 docker-compose exec app composer dump-autoload
 
-## Add rules 
-/home/neitron/PhpstormProjects/igor/laravel/app/Policies/PostPolicy.php
+# Crud
+docker-compose exec app php artisan make:controller PostController --resource
+
+
