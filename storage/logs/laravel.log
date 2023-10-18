@@ -2361,3 +2361,5 @@
 #7 /var/www/public/index.php(55): Illuminate\\Foundation\\Http\\Kernel->terminate(Object(Illuminate\\Http\\Request), Object(Illuminate\\Http\\RedirectResponse))
 #8 {main}
 "} 
+[2023-10-18 13:24:26] local.INFO: This message will be logged.  
+[2023-10-18 13:24:29] local.INFO: This message will be logged.  

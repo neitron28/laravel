@@ -2,6 +2,7 @@
 
 use App\Http\Middleware\CheckAuthenticated;
 use Illuminate\Support\Facades\Route;
+use App\Jobs\WriteToLog;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/dispatch-job', function () {
+    WriteToLog::dispatch("This message will be logged.");
+
+    return "Job has been queued!";
 });
 
 Route::middleware([
