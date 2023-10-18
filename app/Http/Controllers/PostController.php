@@ -53,9 +53,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            // ... (ваші правила валідації)
-        ]);
+        $request->validate([]);
 
         $post = Post::findOrFail($id);
         $this->authorize('update', $post);
