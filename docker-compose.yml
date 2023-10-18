@@ -38,6 +38,16 @@ services:
     networks:
       - app-network
 
+# ... (інші конфігурації)
+
+  node:
+    image: node:14
+    container_name: laravel-node
+    volumes:
+        - .:/var/www
+    working_dir: /var/www
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
 #Docker Networks
 networks:
   app-network:
