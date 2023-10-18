@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PostController extends Controller
 {
@@ -21,7 +22,7 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([...]);
+        $request->validate([]);
 
         Post::create($request->all());
 
@@ -30,8 +31,12 @@ class PostController extends Controller
 
     public function show($id)
     {
-        $post = Post::findOrFail($id);
-        return view('posts.show', compact('post'));
+        try {
+            $post = Post::findOrFail($id);
+            return view('posts.show', compact('post'));
+        } catch (ModelNotFoundException) {
+            return redirect('/posts')->with('error', 'Post Not Found');
+        }
     }
 
     /**
