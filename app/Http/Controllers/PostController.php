@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use OpenApi\Annotations as OA;
@@ -38,16 +37,20 @@ class PostController extends Controller
      *      @OA\Response(
      *          response=200,
      *          description="Successful operation",
-     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Post"))
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Post")
+     *          )
      *       ),
      *      @OA\Response(response=401, description="Unauthenticated"),
-     *      @OA\Response(response=403, description="Forbidden")
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=500, description="Server error")
      * )
      */
     public function index()
     {
         $posts = Post::all();
-        return view('posts.index', compact('posts'));
+        return response()->json($posts, 200);
     }
 
     /**
@@ -63,30 +66,72 @@ class PostController extends Controller
      *      ),
      *      @OA\Response(
      *          response=201,
-     *          description="Successful created",
+     *          description="Successfully created",
      *          @OA\JsonContent(ref="#/components/schemas/Post")
      *       ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=401, description="Unauthenticated"),
      *      @OA\Response(response=422, description="Validation Error"),
      *      @OA\Response(response=500, description="Server error")
      * )
      */
     public function store(Request $request)
     {
-        $request->validate([]);
+        $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
 
-        Post::create($request->all());
+        $post = Post::create($request->all());
 
-        return redirect('/posts')->with('success', 'Post Created Successfully.');
+        return response()->json($post, 201);
     }
 
     /**
-     * @throws AuthorizationException
+     * @OA\Put(
+     *      path="/posts/{id}",
+     *      operationId="updatePost",
+     *      tags={"Posts"},
+     *      summary="Update existing post",
+     *      description="Returns updated post data",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Post ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Post")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successful operation",
+     *          @OA\JsonContent(ref="#/components/schemas/Post")
+     *       ),
+     *      @OA\Response(response=400, description="Bad request"),
+     *      @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=404, description="Resource not found"),
+     *      @OA\Response(response=422, description="Validation Error")
+     * )
      */
     public function update(Request $request, $id)
     {
-        $request->validate([]);
+        $request->validate([
+            'title' => 'required|string',
+            'content' => 'required|string',
+        ]);
 
-        $post = Post::findOrFail($id);
+        try {
+            $post = Post::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
+
         $this->authorize('update', $post);
 
         $post->update($request->all());
@@ -95,11 +140,38 @@ class PostController extends Controller
     }
 
     /**
-     * @throws AuthorizationException
+     * @OA\Delete(
+     *      path="/posts/{id}",
+     *      operationId="deletePost",
+     *      tags={"Posts"},
+     *      summary="Delete a post",
+     *      description="Deletes a post and returns no content",
+     *      @OA\Parameter(
+     *          name="id",
+     *          description="Post ID",
+     *          required=true,
+     *          in="path",
+     *          @OA\Schema(
+     *              type="integer"
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=204,
+     *          description="Successful operation with no content",
+     *       ),
+     *      @OA\Response(response=401, description="Unauthenticated"),
+     *      @OA\Response(response=403, description="Forbidden"),
+     *      @OA\Response(response=404, description="Resource not found")
+     * )
      */
     public function destroy($id)
     {
-        $post = Post::findOrFail($id);
+        try {
+            $post = Post::findOrFail($id);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['message' => 'Resource not found'], 404);
+        }
+
         $this->authorize('delete', $post);
 
         $post->delete();
