@@ -43,7 +43,7 @@ docker-compose exec app php artisan serve
 
 # API 
 - Create API KEY: ff1ee38d76df76dc57a73eef9d5cc2ec via https://home.openweathermap.org/api_keys
-- Install Guzzle: docker-compose exec app composer require guzzlehttp/
+- Install Guzzle: docker-compose exec app composer require guzzlehttp
 - add /weather to routes/web.php
 - test for kiev weather: http://localhost:8010/weather?city=Lviv
 
