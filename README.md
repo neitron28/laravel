@@ -49,3 +49,11 @@ docker-compose exec app php artisan serve
 
 # REST API 
 docker-compose exec app composer require symfony/serializer
+docker-compose exec app php artisan make:controller PostController --resource
+
+# REST API (API DOCUMENTATION)
+install swagger: docker-compose exec app composer require darkaonline/l5-swagger
+public config file: docker-compose exec app php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+generate documentation: docker-compose exec app php artisan l5-swagger:generate
+
+swagger UI: http://localhost:8010/api/documentation
