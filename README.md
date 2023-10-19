@@ -46,3 +46,6 @@ docker-compose exec app php artisan serve
 - Install Guzzle: docker-compose exec app composer require guzzlehttp/
 - add /weather to routes/web.php
 - test for kiev weather: http://localhost:8010/weather?city=Lviv
+
+# REST API 
+docker-compose exec app composer require symfony/serializer
